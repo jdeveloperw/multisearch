@@ -24,7 +24,7 @@ from .views.api import (
 
 urlpatterns = [
     # url(r'^admin/', include(admin.site.urls)),
-    url(r'^search.*$', search, name="search"),
+    url(r'^search/(?P<site>\w+).*$', search, name="search"),
     url(r'^site/$', sites, name="sites"),
     url(r'^site/(?P<site>\w+)/$', site, name="site"),
     url(r'^.*$', test, name="test"),

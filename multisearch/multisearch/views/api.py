@@ -21,13 +21,20 @@ def test(request):
     return HttpResponse("Hello, World!")
 
 
-def search(request):
-    required_get_parameters = {"term", "sites"}
+def search(request, site=None):
+    """."""
+    
+    # Check Preconditions
+    required_get_parameters = {"term"}
     actual_get_parameters = set(request.GET.keys())
     missing_parameters = required_get_parameters - actual_get_parameters
     extra_parameters = actual_get_parameters - required_get_parameters
 
-    if missing_parameters:
+    if site not in SUPPORTED_SITES:
+        return HttpResponseBadRequest(
+            "Unknown site: {site}".format(site=site)
+        )
+    elif missing_parameters:
         return HttpResponseBadRequest(
             "Missing these required parameters: {params}".format(params=missing_parameters)
         )
@@ -35,8 +42,8 @@ def search(request):
         return HttpResponseBadRequest(
             "Unknown parameters: {params}".format(params=extra_parameters)
         )
-    else:
-        return JsonResponse({})
+        
+    return JsonResponse({})
 
 
 def sites(request):
