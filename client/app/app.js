@@ -1,11 +1,10 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('multisearch', [
-])
+angular.module('multisearch', [])
 .factory('searchFactory', ['$http', function($http) {
-
-  var urlBase = 'http://localhost:8000/search/twitter?term=';
+  
+  var urlBase = 'https://multisearch-server-jdeveloperw.c9.io/search/wikipedia?term=';
   
   var searchFactory = {};
   
@@ -21,12 +20,11 @@ angular.module('multisearch', [
   $scope.search = function() {
     $scope.isSearchInProgress = true;
     searchFactory.search($scope.query)
-      .success(function(value) {
-        $scope.results = value;
+      .then(function successCallback(response) {
+        $scope.results = response;
         $scope.isSearchInProgress = false;
-      })
-      .error(function(error) {
-        $scope.results = error;
+      }, function errorCallback(response) {
+        $scope.results = response;
         $scope.isSearchInProgress = false;
       });
   };
