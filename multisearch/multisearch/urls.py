@@ -22,7 +22,6 @@ from .views.api import (
 # from django.contrib import admin
 
 urlpatterns = [
-    # url(r'^admin/', include(admin.site.urls)),
     url(r'^search/(?P<site>\w+).*$', search, name="search"),
     url(r'^site/$', site, name="site"),
     url(r'^.*$', test, name="test"),
