@@ -29,24 +29,17 @@
   <!-- Search Box -->
   <div ng-cloak>
     <div ng-controller="SearchController">
-      Search: <input ng-model="query">
-      <button ng-click="search()" ng-disabled="isSearchInProgress">Go!</button>
-      <div>
-        {{sites}}
-      </div>
-      
-      <div>
-        {{availableSites}}
-      </div>
-      
-      <div isteven-multi-select
+      Search:
+      <input ng-model="query">
+      <span isteven-multi-select
         input-model="availableSites"
         output-model="selectedSites"
         button-label="label"
         item-label="label"
         tick-property="selected"
       >
-      </div>
+      </span>
+      <button ng-click="search()" ng-disabled="isSearchInProgress">Go!</button>
       
       <div>
         {{results}}
