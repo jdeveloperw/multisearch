@@ -1,5 +1,4 @@
 Django
-djangorestframework
-markdown                # Markdown support for the browsable API.
+requests
 django-filter           # Filtering support
 oauth2

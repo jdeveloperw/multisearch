@@ -3,6 +3,7 @@
 
 
 import json
+import requests
 from django.conf import settings
 from django.http import (
     HttpResponse,
@@ -20,12 +21,34 @@ def search_twitter(term):
     
     url = settings.TWITTER_SEARCH_BASE_URL + term
     resp, content = settings.TWITTER_CLIENT.request(url, "GET")
-    data = json.loads(content)
+    raw_data = json.loads(content)
+    data = [
+        {"description": status["text"], "url": "https://twitter.com/statuses/{id}".format(id=status["id"])}
+        for status in raw_data["statuses"]
+    ]
     return data
     
     
+def search_wikipedia(term):
+    """."""
+    url = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + term
+    response = requests.get(url)
+    raw_data = response.json()
+    
+    search_term = raw_data[0]
+    titles = raw_data[1]
+    descriptions = raw_data[2]
+    urls = raw_data[3]
+    
+    data = [
+        {"title": title, "description": description, "url": url}
+        for title, description, url in zip(titles, descriptions, urls)
+    ]
+    return data
+    
 SITE_TO_SEARCH_FUNCTION = {
     "twitter": search_twitter,
+    "wikipedia": search_wikipedia,
 }
 
 
@@ -54,7 +77,7 @@ def search(request, site=None):
     term = request.GET["term"]
     search_function = SITE_TO_SEARCH_FUNCTION[site]
     data = search_function(term)
-    return JsonResponse(data)
+    return JsonResponse(data, safe=False)
 
 
 def site(request):
