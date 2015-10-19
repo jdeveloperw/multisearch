@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('multisearch', [])
+angular.module('multisearch', ["isteven-multi-select", "angular-underscore"])
 .factory('searchFactory', ['$http', function($http) {
   
   var urlBase = 'https://multisearch-server-jdeveloperw.c9.io/search/wikipedia?term=';
@@ -35,9 +35,11 @@ angular.module('multisearch', [])
   
   siteFactory.getAll()
     .then(function successCallback(response) {
-      $scope.sites = response.data;
+      $scope.availableSites = $scope.map(response.data, function(site) {
+        return $scope.extend({"selected": true}, site);
+      });
     }, function errorCallback(response) {
-      alert(response)
+      alert(response);
     });
   
   $scope.search = function() {
