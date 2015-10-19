@@ -14,8 +14,31 @@ angular.module('multisearch', [])
   
   return searchFactory;
 }])
-.controller('SearchController', ["$scope", "searchFactory", function($scope, searchFactory) {
+.factory('siteFactory', ['$http', function($http) {
+  /*
+    I could use $resource here instead; but since all I want to do is list all
+    of the sites, $http is simpler.
+  */
+  
+  var urlBase = 'https://multisearch-server-jdeveloperw.c9.io/site/';
+  
+  var siteFactory = {};
+  
+  siteFactory.getAll = function() {
+      return $http.get(urlBase);
+  };
+  
+  return siteFactory;
+}])
+.controller('SearchController', ["$scope", "siteFactory", "searchFactory", function($scope, siteFactory, searchFactory) {
   $scope.searchInProgress = false;
+  
+  siteFactory.getAll()
+    .then(function successCallback(response) {
+      $scope.sites = response.data;
+    }, function errorCallback(response) {
+      alert(response)
+    });
   
   $scope.search = function() {
     $scope.isSearchInProgress = true;
