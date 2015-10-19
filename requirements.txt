@@ -1,4 +1,0 @@
-Django
-requests
-django-filter           # Filtering support
-oauth2
