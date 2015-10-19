@@ -2,7 +2,19 @@
 """
 
 
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import (
+    HttpResponse,
+    HttpResponseBadRequest,
+    JsonResponse,
+)
+
+
+SUPPORTED_SITES = {
+    "twitter": {},
+    "wikipedia": {},
+}
+
+SUPPORTED_SITES_LIST = sorted(SUPPORTED_SITES.keys())
 
 
 def test(request):
@@ -24,8 +36,20 @@ def search(request):
             "Unknown parameters: {params}".format(params=extra_parameters)
         )
     else:
-        return HttpResponse("Searching...")
+        return JsonResponse({})
 
 
 def sites(request):
-    return HttpResponse("Sites")
+    """."""
+    return JsonResponse(SUPPORTED_SITES_LIST, safe=False)
+    
+    
+def site(request, site=None):
+    """."""
+    # Check Precondition(s)
+    if site not in SUPPORTED_SITES:
+        return HttpResponseBadRequest(
+            "Unknown site: {site}".format(site=site)
+        )
+            
+    return JsonResponse(SUPPORTED_SITES[site])
