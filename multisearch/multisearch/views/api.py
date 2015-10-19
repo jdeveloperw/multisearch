@@ -2,11 +2,13 @@
 """
 
 
+import json
 from django.http import (
     HttpResponse,
     HttpResponseBadRequest,
     JsonResponse,
 )
+from oauth2 import Client, Consumer
 
 
 SUPPORTED_SITES = {
@@ -16,6 +18,11 @@ SUPPORTED_SITES = {
 
 SUPPORTED_SITES_LIST = sorted(SUPPORTED_SITES.keys())
 
+CONSUMER_KEY = "TzeYl9Ymn5bEFnt3gbQpZCjU3"
+
+CONSUMER_SECRET = "0De4ArlxvMoSD24WaKJqmuasXa0fBruKbkPgJPHqj5jpocGbiN"
+
+request_token_url = "https://api.twitter.com/oauth/request_token"
 
 def test(request):
     return HttpResponse("Hello, World!")
@@ -43,7 +50,15 @@ def search(request, site=None):
             "Unknown parameters: {params}".format(params=extra_parameters)
         )
         
-    return JsonResponse({})
+    term = request.GET["term"]
+        
+    consumer = Consumer(key=CONSUMER_KEY, secret=CONSUMER_SECRET)
+    client = Client(consumer)
+    url = "https://api.twitter.com/1.1/search/tweets.json?q=" + term
+    resp, content = client.request(url, "GET")
+    data = json.loads(content)
+        
+    return JsonResponse(data)
 
 
 def sites(request):

@@ -12,3 +12,5 @@ http://www.librador.com/2011/05/23/How-to-run-Django-tests-without-a-database/
 python manage.py runserver 0.0.0.0:8000
 
 https://docs.c9.io/docs/writing-a-python-app
+
+https://dev.twitter.com/oauth/reference/post/oauth2/token
