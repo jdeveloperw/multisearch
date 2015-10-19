@@ -3,29 +3,30 @@
 
 
 import json
+from django.conf import settings
 from django.http import (
     HttpResponse,
     HttpResponseBadRequest,
     JsonResponse,
 )
-from oauth2 import Client, Consumer
 
-
-SUPPORTED_SITES = {
-    "twitter": {},
-    "wikipedia": {},
-}
-
-SUPPORTED_SITES_LIST = sorted(SUPPORTED_SITES.keys())
-
-CONSUMER_KEY = "TzeYl9Ymn5bEFnt3gbQpZCjU3"
-
-CONSUMER_SECRET = "0De4ArlxvMoSD24WaKJqmuasXa0fBruKbkPgJPHqj5jpocGbiN"
-
-request_token_url = "https://api.twitter.com/oauth/request_token"
 
 def test(request):
     return HttpResponse("Hello, World!")
+    
+    
+def search_twitter(term):
+    """."""
+    
+    url = settings.TWITTER_SEARCH_BASE_URL + term
+    resp, content = settings.TWITTER_CLIENT.request(url, "GET")
+    data = json.loads(content)
+    return data
+    
+    
+SITE_TO_SEARCH_FUNCTION = {
+    "twitter": search_twitter,
+}
 
 
 def search(request, site=None):
@@ -37,7 +38,7 @@ def search(request, site=None):
     missing_parameters = required_get_parameters - actual_get_parameters
     extra_parameters = actual_get_parameters - required_get_parameters
 
-    if site not in SUPPORTED_SITES:
+    if site not in settings.SUPPORTED_SITES:
         return HttpResponseBadRequest(
             "Unknown site: {site}".format(site=site)
         )
@@ -51,27 +52,11 @@ def search(request, site=None):
         )
         
     term = request.GET["term"]
-        
-    consumer = Consumer(key=CONSUMER_KEY, secret=CONSUMER_SECRET)
-    client = Client(consumer)
-    url = "https://api.twitter.com/1.1/search/tweets.json?q=" + term
-    resp, content = client.request(url, "GET")
-    data = json.loads(content)
-        
+    search_function = SITE_TO_SEARCH_FUNCTION[site]
+    data = search_function(term)
     return JsonResponse(data)
 
 
-def sites(request):
+def site(request):
     """."""
-    return JsonResponse(SUPPORTED_SITES_LIST, safe=False)
-    
-    
-def site(request, site=None):
-    """."""
-    # Check Precondition(s)
-    if site not in SUPPORTED_SITES:
-        return HttpResponseBadRequest(
-            "Unknown site: {site}".format(site=site)
-        )
-            
-    return JsonResponse(SUPPORTED_SITES[site])
+    return JsonResponse(SUPPORTED_SITES, safe=False)
