@@ -14,3 +14,7 @@ python manage.py runserver 0.0.0.0:8000
 https://docs.c9.io/docs/writing-a-python-app
 
 https://dev.twitter.com/oauth/reference/post/oauth2/token
+
+https://thinkster.io/django-angularjs-tutorial
+
+https://github.com/angular/angular-seed
