@@ -4,12 +4,12 @@
 angular.module('multisearch', ["isteven-multi-select", "angular-underscore"])
 .factory('searchFactory', ['$http', function($http) {
   
-  var urlBase = 'https://multisearch-server-jdeveloperw.c9.io/search/wikipedia?term=';
+  var urlBase = 'https://multisearch-server-jdeveloperw.c9.io/search/';
   
   var searchFactory = {};
   
-  searchFactory.search = function(term) {
-      return $http.get(urlBase + term);
+  searchFactory.search = function(site_id, term) {
+      return $http.get(urlBase + site_id + "?term=" + term);
   };
   
   return searchFactory;
@@ -43,15 +43,19 @@ angular.module('multisearch', ["isteven-multi-select", "angular-underscore"])
     });
   
   $scope.search = function() {
-    $scope.isSearchInProgress = true;
-    searchFactory.search($scope.query)
-      .then(function successCallback(response) {
-        $scope.results = response;
-        $scope.isSearchInProgress = false;
-      }, function errorCallback(response) {
-        $scope.results = response;
-        $scope.isSearchInProgress = false;
-      });
+    $scope.results = {}
+    $scope.each($scope.selectedSites, function(site) {
+      searchFactory.search(site.id, $scope.query)
+        .then(function successCallback(response) {
+          $scope.results[site.id] = $scope.map(response.data, function(raw_result) {
+            var result = $scope.extend({}, raw_result);
+            result["title"] = result["title"] || "Go";
+            return result;
+          });
+        }, function errorCallback(response) {
+          alert(response);
+        });
+    });
   };
 }])
 ;

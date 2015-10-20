@@ -39,10 +39,13 @@
         tick-property="selected"
       >
       </span>
-      <button ng-click="search()" ng-disabled="isSearchInProgress">Go!</button>
+      <button ng-click="search()">Go!</button>
       
-      <div>
-        {{results}}
+      <div ng-repeat="(site_id, results) in results">
+          {{site_id}}<br/>
+          <div ng-repeat="result in results">
+            <a ng-href="{{result.url}}">{{result.title}}</a> {{result.description}}
+          </div>
       </div>
     </div>
   </div>
