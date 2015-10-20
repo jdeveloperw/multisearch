@@ -1,20 +1,48 @@
 # multi-search
 Search aggregator for multiple sites
 
-## Boostrap
-http://www.django-rest-framework.org/#installation
-mkvirtualenv multi-search
-https://www.djangoproject.com/start/
-https://docs.djangoproject.com/en/stable/intro/install/
-https://docs.djangoproject.com/en/1.8/intro/tutorial01/
-http://www.librador.com/2011/05/23/How-to-run-Django-tests-without-a-database/
+## Viewing the application
+You can view the application at [https://multisearch-client-jdeveloperw.c9.io](https://multisearch-client-jdeveloperw.c9.io)
 
-python manage.py runserver 0.0.0.0:8080
+## Architecture
+The multisearch application is divided into two separate services:
 
-https://docs.c9.io/docs/writing-a-python-app
+1. nodejs server which serves the static HTML, Javascript (AngularJS), and CSS used by the client (see client/)
+2. Django server which provides the API endpoints used by the client (see server/)
 
-https://dev.twitter.com/oauth/reference/post/oauth2/token
+## Performance improvements
+1. Perform asynchronous loads of resources in the client
+2. Cache results from Twitter and return them when the Twitter API is throttling requests
 
-https://thinkster.io/django-angularjs-tutorial
+## Other improvements
+1. In addition to Twitter statuses, display other search results
+2. Add "search all" endpoint to Django API that will query all sites in parallel
 
-https://github.com/angular/angular-seed
+**User story**
+
+As a Kabbage developer, I want to see how you code a lightweight application, so that I can get a feel for a your skills and strengths.
+
+**Acceptance Criteria:**
+
+1. Given a user, when they access your application, then they should be presented with a search box prompting them for a topic - DONE
+2. Given a user, when they enter a topic, results from Twitter should be returned - DONE
+3. Given a user, when they enter a topic, results from Wikipedia should be returned - DONE
+4. Given a user who's performed a search, when they hit the browser's refresh button, results should be refreshed under the same search criteria. - DONE
+
+**Technical notes:**
+
+1. Perform your work in a git repo, and send a tarball of the repo, or post it on GitHub and send us the URL - DONE
+2. Use Python, Javascript or some mixture of the two -- play to your strengths :-) - DONE
+3. Use the Wikipedia and Twitter APIs - DONE
+4. Render the prompt and the results as a Web page - DONE
+5. The application must gracefully handle one, the other, or both APIs being down - DONE
+6. Include a README that describes the performance profile of your application, highlighting bottlenecks and how you’d tackle them in the future
+7. Include unit tests
+8. Make sure your submission accurately reflects your development style. - DONE
+9. Commit early and often, with good messages. - DONE
+
+**Bonus points:**
+
+* Allow the user to check a box that says “limit result those near me” which restricts the results from Wikipedia and Twitter to a 100 mile radius around the user’s current location
+* Deploy to Heroku - DONE
+* Impress us :-) - DONE
