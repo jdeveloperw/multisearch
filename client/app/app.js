@@ -43,7 +43,10 @@ angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-under
     $scope.each(siteIds, function(siteId) {
       searchFactory.search(siteId, $scope.query)
         .then(function successCallback(response) {
-          $scope.results[siteId] = response.data;
+          $scope.results[siteId] = {
+            "label": $scope.siteIdToSiteLabel[siteId],
+            "results": response.data
+          };
         }, function errorCallback(response) {
           notifications.showError("Unable to fetch results for " + siteId);
         });
@@ -63,6 +66,13 @@ angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-under
   
   siteFactory.getAll()
     .then(function successCallback(response) {
+      
+      // Create a mapping from Site ID (e.g. twitter) to the Site Label (e.g. Twitter)
+      $scope.siteIdToSiteLabel = {}
+      $scope.each(response.data, function(site) {
+        $scope.siteIdToSiteLabel[site.id] = site.label;
+      });
+      
       $scope.availableSites = $scope.map(response.data, function(site) {
         var selected = !$scope.initialSiteIds || $scope.contains($scope.initialSiteIds, site.id);
         return $scope.extend({"selected": selected}, site);

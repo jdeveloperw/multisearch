@@ -54,14 +54,16 @@
       </button>
       
       <!-- Display results -->
-      <div ng-repeat="(site_id, results) in results">
-          {{site_id}}<br/>
-          <div ng-repeat="result in results">
+      <div ng-repeat="(siteId, data) in results | orderBy:'+siteId'">
+          Results for {{data.label}}:
+          <div ng-repeat="result in data.results">
             <a ng-href="{{result.url}}" target="_blank">
               <span ng-if="result.title">{{result.title}}</span>
               <span ng-if="!result.title"><i class="glyphicon glyphicon-share"></i></span>
-            </a> {{result.description}}
+            </a>
+            {{result.description}}
           </div>
+          <br/>
       </div>
     </div>
   </div>
