@@ -2,3 +2,4 @@ Django
 requests
 django-filter           # Filtering support
 oauth2
+django-cors-headers

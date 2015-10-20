@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/stable/intro/install/
 https://docs.djangoproject.com/en/1.8/intro/tutorial01/
 http://www.librador.com/2011/05/23/How-to-run-Django-tests-without-a-database/
 
-python manage.py runserver 0.0.0.0:8000
+python manage.py runserver 0.0.0.0:8080
 
 https://docs.c9.io/docs/writing-a-python-app
 

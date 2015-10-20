@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # 'django.contrib.auth',
     # 'django.contrib.contenttypes',
+    'corsheaders',
     'multisearch',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -42,6 +43,7 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -51,6 +53,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+"""
+CORS_ORIGIN_WHITELIST = (
+    "multisearch-client-jdeveloperw.c9.io",
+)
+"""
 
 ROOT_URLCONF = 'multisearch.urls'
 
@@ -105,7 +115,15 @@ STATIC_URL = '/static/'
 
 # Sites that we can search
 
-SUPPORTED_SITES = ["twitter", "wikipedia"]
+SUPPORTED_SITES = [{
+    "id": "twitter",
+    "label": "Twitter",
+}, {
+    "id": "wikipedia",
+    "label": "Wikipedia",
+}]
+
+SUPPORTED_SITE_IDS = [site["id"] for site in SUPPORTED_SITES]
 
 # Twitter
 TWITTER_CONSUMER_KEY = "TzeYl9Ymn5bEFnt3gbQpZCjU3"

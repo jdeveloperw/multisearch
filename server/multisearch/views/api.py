@@ -23,7 +23,7 @@ def search_twitter(term):
     resp, content = settings.TWITTER_CLIENT.request(url, "GET")
     raw_data = json.loads(content)
     data = [
-        {"description": status["text"], "url": "https://twitter.com/statuses/{id}".format(id=status["id"])}
+        {"title": "", "description": status["text"], "url": "https://twitter.com/statuses/{id}".format(id=status["id"])}
         for status in raw_data["statuses"]
     ]
     return data
@@ -61,7 +61,7 @@ def search(request, site=None):
     missing_parameters = required_get_parameters - actual_get_parameters
     extra_parameters = actual_get_parameters - required_get_parameters
 
-    if site not in settings.SUPPORTED_SITES:
+    if site not in settings.SUPPORTED_SITE_IDS:
         return HttpResponseBadRequest(
             "Unknown site: {site}".format(site=site)
         )
@@ -82,4 +82,4 @@ def search(request, site=None):
 
 def site(request):
     """."""
-    return JsonResponse(SUPPORTED_SITES, safe=False)
+    return JsonResponse(settings.SUPPORTED_SITES, safe=False)
