@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-underscore"])
+angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-underscore", "ngNotificationsBar", "ngSanitize"])
 .config(function($routeProvider) {
 })
 .factory('searchFactory', ['$http', function($http) {
@@ -32,7 +32,8 @@ angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-under
   
   return siteFactory;
 }])
-.controller('SearchController', ["$scope", "$window", "$location", "siteFactory", "searchFactory", function($scope, $window, $location, siteFactory, searchFactory) {
+.controller('SearchController', ["$scope", "$window", "$location", "notifications", "siteFactory", "searchFactory",
+                                 function($scope, $window, $location, notifications, siteFactory, searchFactory) {
   
   var search = function(siteIds) {
     $location.search({"query": $scope.query, "site": siteIds});
@@ -43,7 +44,7 @@ angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-under
         .then(function successCallback(response) {
           $scope.results[siteId] = response.data;
         }, function errorCallback(response) {
-          $window.alert(response);
+          notifications.showError("Unable to fetch results for " + siteId);
         });
     });
   };

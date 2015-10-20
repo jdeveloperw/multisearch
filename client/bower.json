@@ -13,6 +13,9 @@
     "underscore": "~1.8.3",
     "html5-boilerplate": "~5.2.0",
     "isteven-angular-multiselect": "~4.0.0",
-    "angular-underscore": "~0.5.0"
+    "angular-underscore": "~0.5.0",
+    "angular-notification": "~1.1.1",
+    "ng-notifications-bar": "~0.0.15",
+    "bootstrap": "~3.3.5"
   }
 }
