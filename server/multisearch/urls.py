@@ -17,12 +17,14 @@ from django.conf.urls import include, url
 from .views.api import (
     test,
     search,
+    sites,
     site,
 )
 # from django.contrib import admin
 
 urlpatterns = [
-    url(r'^search/(?P<site>\w+).*$', search, name="search"),
-    url(r'^site/$', site, name="site"),
+    url(r'^search/(?P<site_id>\w+).*$', search, name="search"),
+    url(r'^site/$', sites, name="sites"),
+    url(r'^site/(?P<site_id>\w+)/$', site, name="site"),
     url(r'^.*$', test, name="test"),
 ]

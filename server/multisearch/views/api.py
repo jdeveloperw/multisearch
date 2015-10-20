@@ -52,7 +52,7 @@ SITE_TO_SEARCH_FUNCTION = {
 }
 
 
-def search(request, site=None):
+def search(request, site_id=None):
     """."""
     
     # Check Preconditions
@@ -61,9 +61,9 @@ def search(request, site=None):
     missing_parameters = required_get_parameters - actual_get_parameters
     extra_parameters = actual_get_parameters - required_get_parameters
 
-    if site not in settings.SUPPORTED_SITE_IDS:
+    if site_id not in settings.SUPPORTED_SITE_IDS:
         return HttpResponseBadRequest(
-            "Unknown site: {site}".format(site=site)
+            "Unknown site: {site_id}".format(site_id=site_id)
         )
     elif missing_parameters:
         return HttpResponseBadRequest(
@@ -75,11 +75,22 @@ def search(request, site=None):
         )
         
     term = request.GET["term"]
-    search_function = SITE_TO_SEARCH_FUNCTION[site]
+    search_function = SITE_TO_SEARCH_FUNCTION[site_id]
     data = search_function(term)
     return JsonResponse(data, safe=False)
 
 
-def site(request):
+def sites(request):
     """."""
+    return JsonResponse(settings.SUPPORTED_SITES, safe=False)
+
+
+def site(request, site_id=None):
+    """."""
+    # Check Preconditions
+    if site_id not in settings.SUPPORTED_SITE_IDS:
+        return HttpResponseBadRequest(
+            "Unknown site: {site_id}".format(site_id=site_id)
+        )
+    
     return JsonResponse(settings.SUPPORTED_SITES, safe=False)
