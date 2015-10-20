@@ -95,6 +95,11 @@ angular.module('multisearch', [
     }, function errorCallback(response) {
       $window.alert(response);
     });
+    
+  $scope.labelToIconClass = {
+    "Wikipedia": "fa fa-wikipedia-w",
+    "Twitter": "fa fa-twitter",
+  }
   
   $scope.search = function() {
     var siteIds = $scope.pluck($scope.selectedSites, "id");

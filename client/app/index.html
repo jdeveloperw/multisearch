@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="bower_components/isteven-angular-multiselect/isteven-multi-select.css">
   <link rel="stylesheet" href="bower_components/ng-notifications-bar/dist/ngNotificationsBar.min.css" />
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
   <script src="bower_components/underscore/underscore.js"></script>
   <script src="bower_components/angular/angular.js"></script>
@@ -56,15 +57,18 @@
       
       <!-- Display results, ordered by the site -->
       <div ng-repeat="data in results | toArray | orderBy:'+label'">
-          Results for {{data.label}}:
           <div ng-repeat="result in data.results">
+            <!-- Twitter/Wikipedia Icon -->
+            <span class="icon-wikipedia-w"></span>
+            <i ng-class="labelToIconClass[data.label]"></i>
             <a ng-href="{{result.url}}" target="_blank">
               <span ng-if="result.title">{{result.title}}</span>
-              <span ng-if="!result.title"><i class="glyphicon glyphicon-share"></i></span>
+              <span ng-if="!result.title">
+                <i class="glyphicon glyphicon-share"></i>
+              </span>
             </a>
             {{result.description}}
           </div>
-          <br/>
       </div>
     </div>
   </div>
