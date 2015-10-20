@@ -47,11 +47,7 @@ angular.module('multisearch', ["isteven-multi-select", "angular-underscore"])
     $scope.each($scope.selectedSites, function(site) {
       searchFactory.search(site.id, $scope.query)
         .then(function successCallback(response) {
-          $scope.results[site.id] = $scope.map(response.data, function(raw_result) {
-            var result = $scope.extend({}, raw_result);
-            result["title"] = result["title"] || "Go";
-            return result;
-          });
+          $scope.results[site.id] = response.data;
         }, function errorCallback(response) {
           alert(response);
         });
