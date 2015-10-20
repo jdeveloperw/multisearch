@@ -13,11 +13,11 @@ angular.module('multisearch', [
   
   var urlBase = 'https://multisearch-server-jdeveloperw.c9.io/search/';
   
-  var searchFactory = {};
-  
-  searchFactory.search = function(site_id, term) {
-      return $http.get(urlBase + site_id + "?term=" + term);
-  };
+  var searchFactory = {
+    search: function(site_id, term) {
+        return $http.get(urlBase + site_id + "?term=" + term);
+    }
+  }
   
   return searchFactory;
 }])
@@ -30,10 +30,10 @@ angular.module('multisearch', [
   
   var url = 'https://multisearch-server-jdeveloperw.c9.io/site/';
   
-  var siteFactory = {};
-  
-  siteFactory.getAll = function() {
-      return $http.get(url);
+  var siteFactory = {
+    getAll: function() {
+        return $http.get(url);
+    }
   };
   
   return siteFactory;
@@ -51,8 +51,8 @@ angular.module('multisearch', [
       searchFactory.search(siteId, $scope.query)
         .then(function successCallback(response) {
           $scope.results[siteId] = {
-            "label": $scope.siteIdToSiteLabel[siteId],
-            "results": response.data
+            label: $scope.siteIdToSiteLabel[siteId],
+            results: response.data
           };
         }, function errorCallback(response) {
           notifications.showError("Unable to fetch results for " + siteId);
@@ -97,8 +97,8 @@ angular.module('multisearch', [
     });
     
   $scope.labelToIconClass = {
-    "Wikipedia": "fa fa-wikipedia-w",
-    "Twitter": "fa fa-twitter",
+    Wikipedia: "fa fa-wikipedia-w",
+    Twitter: "fa fa-twitter",
   }
   
   $scope.search = function() {
