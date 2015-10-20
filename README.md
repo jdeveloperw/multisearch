@@ -6,6 +6,7 @@ You can view the application at [https://multisearch-client-jdeveloperw.c9.io](h
 
 ## Architecture
 The multisearch application is divided into two separate services:
+
 1. nodejs server which serves the static HTML, Javascript (AngularJS), and CSS used by the client (see client/)
 2. Django server which provides the API endpoints used by the client (see server/)
 
