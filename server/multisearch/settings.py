@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_nose',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -113,6 +114,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
 # Sites that we can search
 
 SUPPORTED_SITES = [{
@@ -124,6 +127,11 @@ SUPPORTED_SITES = [{
 }]
 
 SUPPORTED_SITE_IDS = [site["id"] for site in SUPPORTED_SITES]
+
+SITE_ID_TO_SITE = {
+    site["id"]: site
+    for site in SUPPORTED_SITES
+}
 
 # Twitter
 TWITTER_CONSUMER_KEY = "TzeYl9Ymn5bEFnt3gbQpZCjU3"

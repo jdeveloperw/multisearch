@@ -89,4 +89,4 @@ def site(request, site_id=None):
             "Unknown site: {site_id}".format(site_id=site_id)
         )
     
-    return JsonResponse(settings.SUPPORTED_SITES, safe=False)
+    return JsonResponse(settings.SITE_ID_TO_SITE[site_id], safe=False)
