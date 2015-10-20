@@ -1,5 +1,7 @@
-Django
-requests
+Django                  # The big kahuna webserver
+requests                # Library for making HTTP requests
 django-filter           # Filtering support
-oauth2
-django-cors-headers
+oauth2                  # Support for oauth authentication
+django-cors-headers     # Enable Django to support CORS requests
+nose                    # Test runner
+django-nose             # Test extensions for Django
