@@ -1,7 +1,9 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('multisearch', ["isteven-multi-select", "angular-underscore"])
+angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-underscore"])
+.config(function($routeProvider) {
+})
 .factory('searchFactory', ['$http', function($http) {
   
   var urlBase = 'https://multisearch-server-jdeveloperw.c9.io/search/';
@@ -30,32 +32,50 @@ angular.module('multisearch', ["isteven-multi-select", "angular-underscore"])
   
   return siteFactory;
 }])
-.controller('SearchController', ["$scope", "siteFactory", "searchFactory", function($scope, siteFactory, searchFactory) {
-  $scope.searchInProgress = false;
+.controller('SearchController', ["$scope", "$window", "$location", "siteFactory", "searchFactory", function($scope, $window, $location, siteFactory, searchFactory) {
+  
+  var search = function(siteIds) {
+    $location.search({"query": $scope.query, "site": siteIds});
+    
+    $scope.results = {}
+    $scope.each(siteIds, function(siteId) {
+      searchFactory.search(siteId, $scope.query)
+        .then(function successCallback(response) {
+          $scope.results[siteId] = response.data;
+        }, function errorCallback(response) {
+          $window.alert(response);
+        });
+    });
+  };
+  
+  // Set variables from URL parameters
+  $scope.query = $location.search()["query"];
+  var rawSiteIds = $location.search()["site"]
+  if (rawSiteIds && $scope.isArray(rawSiteIds)) {
+    $scope.initialSiteIds = rawSiteIds;
+  } else if (rawSiteIds) {
+    $scope.initialSiteIds = [rawSiteIds];
+  } else {
+    $scope.initialSiteIds = [];
+  }
   
   siteFactory.getAll()
     .then(function successCallback(response) {
       $scope.availableSites = $scope.map(response.data, function(site) {
-        return $scope.extend({"selected": true}, site);
+        var selected = !$scope.initialSiteIds || $scope.contains($scope.initialSiteIds, site.id);
+        return $scope.extend({"selected": selected}, site);
       });
+  
+      // Run initial search if we have query parameters in the URL
+      if ($scope.query) {
+        search($scope.initialSiteIds); 
+      };
     }, function errorCallback(response) {
-      alert(response);
+      $window.alert(response);
     });
   
   $scope.search = function() {
-    $scope.results = {}
-    $scope.each($scope.selectedSites, function(site) {
-      searchFactory.search(site.id, $scope.query)
-        .then(function successCallback(response) {
-          $scope.results[site.id] = $scope.map(response.data, function(raw_result) {
-            var result = $scope.extend({}, raw_result);
-            result["title"] = result["title"] || "Go";
-            return result;
-          });
-        }, function errorCallback(response) {
-          alert(response);
-        });
-    });
+    var siteIds = $scope.pluck($scope.selectedSites, "id");
+    search(siteIds);
   };
-}])
-;
+}]);
