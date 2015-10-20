@@ -1,7 +1,9 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('multisearch', ["isteven-multi-select", "angular-underscore"])
+angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-underscore"])
+.config(function($routeProvider) {
+})
 .factory('searchFactory', ['$http', function($http) {
   
   var urlBase = 'https://multisearch-server-jdeveloperw.c9.io/search/';
@@ -30,26 +32,38 @@ angular.module('multisearch', ["isteven-multi-select", "angular-underscore"])
   
   return siteFactory;
 }])
-.controller('SearchController', ["$scope", "siteFactory", "searchFactory", function($scope, siteFactory, searchFactory) {
-  $scope.searchInProgress = false;
+.controller('SearchController', ["$scope", "$window", "$location", "siteFactory", "searchFactory", function($scope, $window, $location, siteFactory, searchFactory) {
+  
+  $scope.each($location.search(), function(value, key) {
+    $scope[key] = value;
+  });
   
   siteFactory.getAll()
     .then(function successCallback(response) {
       $scope.availableSites = $scope.map(response.data, function(site) {
         return $scope.extend({"selected": true}, site);
       });
+  
+      // Run initial search if we have query parameters in the URL
+      if ($scope.query) {
+        $scope.search(); 
+      };
     }, function errorCallback(response) {
-      alert(response);
+      $window.alert(response);
     });
   
   $scope.search = function() {
+    $location.search({"query": $scope.query});
+    
+    var searchSites = $scope.selectedSites || $scope.availableSites;
+    
     $scope.results = {}
-    $scope.each($scope.selectedSites, function(site) {
+    $scope.each(searchSites, function(site) {
       searchFactory.search(site.id, $scope.query)
         .then(function successCallback(response) {
           $scope.results[site.id] = response.data;
         }, function errorCallback(response) {
-          alert(response);
+          $window.alert(response);
         });
     });
   };
