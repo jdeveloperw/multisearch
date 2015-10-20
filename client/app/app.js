@@ -78,7 +78,7 @@ angular.module('multisearch', ["isteven-multi-select", "angular-underscore", "ng
       
       // Create multi-select for all available sites
       $scope.availableSites = $scope.map(response.data, function(site) {
-        var selected = !$scope.initialSiteIds || $scope.contains($scope.initialSiteIds, site.id);
+        var selected = $scope.isEmpty($scope.initialSiteIds) || $scope.contains($scope.initialSiteIds, site.id);
         return $scope.extend({"selected": selected}, site);
       });
   
