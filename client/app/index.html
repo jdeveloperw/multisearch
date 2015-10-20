@@ -49,7 +49,9 @@
       >
       </span>
       <!-- Search button -->
-      <button ng-click="search()">Go!</button>
+      <button ng-click="search()" type="button" class="btn btn-default" aria-label="Left Align">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+      </button>
       
       <!-- Display results -->
       <div ng-repeat="(site_id, results) in results">
