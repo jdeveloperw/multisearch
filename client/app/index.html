@@ -53,7 +53,7 @@
         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
       </button>
       
-      <!-- Display results -->
+      <!-- Display results, ordered by the site -->
       <div ng-repeat="(siteId, data) in results | orderBy:'+siteId'">
           Results for {{data.label}}:
           <div ng-repeat="result in data.results">
