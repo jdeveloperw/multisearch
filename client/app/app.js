@@ -34,6 +34,20 @@ angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-under
 }])
 .controller('SearchController', ["$scope", "$window", "$location", "siteFactory", "searchFactory", function($scope, $window, $location, siteFactory, searchFactory) {
   
+  var search = function(searchSites) {
+    $location.search({"query": $scope.query});
+    
+    $scope.results = {}
+    $scope.each(searchSites, function(site) {
+      searchFactory.search(site.id, $scope.query)
+        .then(function successCallback(response) {
+          $scope.results[site.id] = response.data;
+        }, function errorCallback(response) {
+          $window.alert(response);
+        });
+    });
+  };
+  
   $scope.each($location.search(), function(value, key) {
     $scope[key] = value;
   });
@@ -46,26 +60,13 @@ angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-under
   
       // Run initial search if we have query parameters in the URL
       if ($scope.query) {
-        $scope.search(); 
+        search($scope.availableSites); 
       };
     }, function errorCallback(response) {
       $window.alert(response);
     });
   
   $scope.search = function() {
-    $location.search({"query": $scope.query});
-    
-    var searchSites = $scope.selectedSites || $scope.availableSites;
-    
-    $scope.results = {}
-    $scope.each(searchSites, function(site) {
-      searchFactory.search(site.id, $scope.query)
-        .then(function successCallback(response) {
-          $scope.results[site.id] = response.data;
-        }, function errorCallback(response) {
-          $window.alert(response);
-        });
-    });
+    search($scope.selectedSites);
   };
-}])
-;
+}]);
