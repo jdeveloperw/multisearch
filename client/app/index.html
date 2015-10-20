@@ -12,27 +12,46 @@
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="bower_components/isteven-angular-multiselect/isteven-multi-select.css">
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="bower_components/underscore/underscore.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
+  <script src="bower_components/angular-underscore/angular-underscore.js"></script>
+  <script src="app.js"></script>
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
 </head>
 <body>
   
   <!-- Search Box -->
-  <div ng-controller="SearchController">
-    Search: <input ng-model="query">
-    <button ng-click="search()" ng-disabled="isSearchInProgress">Go!</button>
-    <div>
-      {{results}}
+  <div ng-cloak>
+    <div ng-controller="SearchController">
+      Search:
+      <input ng-model="query">
+      <span isteven-multi-select
+        input-model="availableSites"
+        output-model="selectedSites"
+        button-label="label"
+        item-label="label"
+        tick-property="selected"
+      >
+      </span>
+      <button ng-click="search()">Go!</button>
+      
+      <div ng-repeat="(site_id, results) in results">
+          {{site_id}}<br/>
+          <div ng-repeat="result in results">
+            <a ng-href="{{result.url}}">{{result.title}}</a> {{result.description}}
+          </div>
+      </div>
     </div>
   </div>
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="app.js"></script>
-  <script src="components/version/version.js"></script>
-  <script src="components/version/version-directive.js"></script>
-  <script src="components/version/interpolate-filter.js"></script>
 </body>
 </html>
