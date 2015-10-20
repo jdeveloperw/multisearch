@@ -16,6 +16,7 @@
     "angular-underscore": "~0.5.0",
     "angular-notification": "~1.1.1",
     "ng-notifications-bar": "~0.0.15",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "angular-toArrayFilter": "~1.0.1"
   }
 }

@@ -1,7 +1,13 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('multisearch', ["isteven-multi-select", "angular-underscore", "ngNotificationsBar", "ngSanitize"])
+angular.module('multisearch', [
+  "isteven-multi-select",
+  "angular-underscore",
+  "ngNotificationsBar",
+  "ngSanitize",
+  "angular-toArrayFilter"
+])
 // Service wrapping the /search endpoint of the API
 .factory('searchFactory', ['$http', function($http) {
   
