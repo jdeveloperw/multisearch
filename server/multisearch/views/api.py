@@ -12,10 +12,6 @@ from django.http import (
 )
 
 
-def test(request):
-    return HttpResponse("Hello, World!")
-    
-    
 def search_twitter(term):
     """."""
     

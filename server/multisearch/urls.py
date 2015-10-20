@@ -26,5 +26,4 @@ urlpatterns = [
     url(r'^search/(?P<site_id>\w+).*$', search, name="search"),
     url(r'^site/$', sites, name="sites"),
     url(r'^site/(?P<site_id>\w+)/$', site, name="site"),
-    url(r'^.*$', test, name="test"),
 ]
