@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from oauth2 import Client, Consumer
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -136,5 +135,4 @@ SITE_ID_TO_SITE = {
 # Twitter
 TWITTER_CONSUMER_KEY = "TzeYl9Ymn5bEFnt3gbQpZCjU3"
 TWITTER_CONSUMER_SECRET = "0De4ArlxvMoSD24WaKJqmuasXa0fBruKbkPgJPHqj5jpocGbiN"
-TWITTER_CLIENT = Client(Consumer(key=TWITTER_CONSUMER_KEY, secret=TWITTER_CONSUMER_SECRET))
 TWITTER_SEARCH_BASE_URL = "https://api.twitter.com/1.1/search/tweets.json?q="

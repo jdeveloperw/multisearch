@@ -9,6 +9,7 @@ from django.http import (
     HttpResponseBadRequest,
     JsonResponse,
 )
+from oauth2 import Client, Consumer
 
 
 def search_twitter(term):
@@ -17,10 +18,14 @@ def search_twitter(term):
     Each dictionary has these keys: title, description, url"""
     
     url = settings.TWITTER_SEARCH_BASE_URL + term
-    resp, content = settings.TWITTER_CLIENT.request(url, method="GET")
+    client = Client(Consumer(key=settings.TWITTER_CONSUMER_KEY,
+                             secret=settings.TWITTER_CONSUMER_SECRET))
+    
+    resp, content = client.request(url, method="GET")
     raw_data = json.loads(content)
     data = [
-        {"title": "", "description": status["text"], "url": "https://twitter.com/statuses/{id}".format(id=status["id"])}
+        {"title": "", "description": status["text"],
+         "url": "https://twitter.com/statuses/{id}".format(id=status["id"])}
         for status in raw_data["statuses"]
     ]
     return data

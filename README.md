@@ -13,6 +13,7 @@ The multisearch application is divided into two separate services:
 ## Performance improvements
 1. Perform asynchronous loads of resources in the client
 2. Cache results from Twitter and return them when the Twitter API is throttling requests
+3. Have a persistent Twitter client that only refreshes when authentication expires.
 
 ## Other improvements
 1. In addition to Twitter statuses, display other search results
