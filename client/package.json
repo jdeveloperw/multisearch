@@ -1,9 +1,9 @@
 {
-  "name": "angular-seed",
+  "name": "multisearch-client",
   "private": true,
-  "version": "0.0.0",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "version": "1.0.0",
+  "description": "Search aggregator client",
+  "repository": "https://github.com/jdeveloperw/multisearch",
   "license": "MIT",
   "devDependencies": {
     "bower": "^1.3.1",
