@@ -20,7 +20,7 @@ def search_twitter(term):
     """."""
     
     url = settings.TWITTER_SEARCH_BASE_URL + term
-    resp, content = settings.TWITTER_CLIENT.request(url, "GET")
+    resp, content = settings.TWITTER_CLIENT.request(url, method="GET")
     raw_data = json.loads(content)
     data = [
         {"title": "", "description": status["text"], "url": "https://twitter.com/statuses/{id}".format(id=status["id"])}
