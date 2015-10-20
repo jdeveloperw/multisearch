@@ -1,5 +1,4 @@
-"""
-"""
+"""API endpoints for multisearch"""
 
 
 import json
@@ -13,7 +12,9 @@ from django.http import (
 
 
 def search_twitter(term):
-    """."""
+    """Query the Twitter API for term and return statuses that match
+    Returns a list of dictionaries.
+    Each dictionary has these keys: title, description, url"""
     
     url = settings.TWITTER_SEARCH_BASE_URL + term
     resp, content = settings.TWITTER_CLIENT.request(url, method="GET")
@@ -26,7 +27,10 @@ def search_twitter(term):
     
     
 def search_wikipedia(term):
-    """."""
+    """Query the Wikipedia API for the term.
+    Returns a list of dictionaries.
+    Each dictionary has these keys: title, description, url"""
+    
     url = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + term
     response = requests.get(url)
     raw_data = response.json()
@@ -49,7 +53,9 @@ SITE_TO_SEARCH_FUNCTION = {
 
 
 def search(request, site_id=None):
-    """."""
+    """Query the API given by site_id for the term in the request.
+    Returns a list of dictionaries.
+    Each dictionary has these keys: title, description, url"""
     
     # Check Preconditions
     required_get_parameters = {"term"}
@@ -63,11 +69,11 @@ def search(request, site_id=None):
         )
     elif missing_parameters:
         return HttpResponseBadRequest(
-            "Missing these required parameters: {params}".format(params=missing_parameters)
+            "Missing required parameters: {params}".format(params=", ".join(missing_parameters))
         )
     elif extra_parameters:
         return HttpResponseBadRequest(
-            "Unknown parameters: {params}".format(params=extra_parameters)
+            "Unknown parameters: {params}".format(params=", ".join(extra_parameters))
         )
         
     term = request.GET["term"]
@@ -77,12 +83,15 @@ def search(request, site_id=None):
 
 
 def sites(request):
-    """."""
+    """Return a list of all sites that are supported.
+    Each element in the list is a dict containing with keys: id, label"""
+    
     return JsonResponse(settings.SUPPORTED_SITES, safe=False)
 
 
 def site(request, site_id=None):
-    """."""
+    """Return a dict for the given site_id containing with keys: id, label"""
+    
     # Check Preconditions
     if site_id not in settings.SUPPORTED_SITE_IDS:
         return HttpResponseBadRequest(
