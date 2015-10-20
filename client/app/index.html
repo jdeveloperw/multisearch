@@ -37,7 +37,9 @@
   <div ng-cloak>
     <div ng-controller="SearchController">
       Search:
+      <!-- The search box -->
       <input ng-model="query">
+      <!-- Multiselect for sites to search -->
       <span isteven-multi-select
         input-model="availableSites"
         output-model="selectedSites"
@@ -46,14 +48,16 @@
         tick-property="selected"
       >
       </span>
+      <!-- Search button -->
       <button ng-click="search()">Go!</button>
       
+      <!-- Display results -->
       <div ng-repeat="(site_id, results) in results">
           {{site_id}}<br/>
           <div ng-repeat="result in results">
             <a ng-href="{{result.url}}" target="_blank">
               <span ng-if="result.title">{{result.title}}</span>
-              <span ng-if="!result.title"><img src="components/link-icon.png" height=15 width=15></span>
+              <span ng-if="!result.title"><i class="glyphicon glyphicon-share"></i></span>
             </a> {{result.description}}
           </div>
       </div>

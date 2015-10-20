@@ -35,6 +35,7 @@ angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-under
 .controller('SearchController', ["$scope", "$window", "$location", "notifications", "siteFactory", "searchFactory",
                                  function($scope, $window, $location, notifications, siteFactory, searchFactory) {
   
+  // Query the server search API for the given site IDs and the term in the search box
   var search = function(siteIds) {
     $location.search({"query": $scope.query, "site": siteIds});
     
