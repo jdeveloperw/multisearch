@@ -1,4 +1,4 @@
-"""."""
+"""Test API endpoints for multisearch"""
 
 
 from collections import namedtuple

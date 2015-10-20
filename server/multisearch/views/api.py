@@ -1,5 +1,4 @@
-"""
-"""
+"""API endpoints for multisearch"""
 
 
 import json
