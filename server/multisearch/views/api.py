@@ -63,11 +63,11 @@ def search(request, site_id=None):
         )
     elif missing_parameters:
         return HttpResponseBadRequest(
-            "Missing these required parameters: {params}".format(params=missing_parameters)
+            "Missing required parameters: {params}".format(params=", ".join(missing_parameters))
         )
     elif extra_parameters:
         return HttpResponseBadRequest(
-            "Unknown parameters: {params}".format(params=extra_parameters)
+            "Unknown parameters: {params}".format(params=", ".join(extra_parameters))
         )
         
     term = request.GET["term"]
