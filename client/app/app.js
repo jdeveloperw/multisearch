@@ -34,39 +34,48 @@ angular.module('multisearch', ["ngRoute", "isteven-multi-select", "angular-under
 }])
 .controller('SearchController', ["$scope", "$window", "$location", "siteFactory", "searchFactory", function($scope, $window, $location, siteFactory, searchFactory) {
   
-  var search = function(searchSites) {
-    $location.search({"query": $scope.query});
+  var search = function(siteIds) {
+    $location.search({"query": $scope.query, "site": siteIds});
     
     $scope.results = {}
-    $scope.each(searchSites, function(site) {
-      searchFactory.search(site.id, $scope.query)
+    $scope.each(siteIds, function(siteId) {
+      searchFactory.search(siteId, $scope.query)
         .then(function successCallback(response) {
-          $scope.results[site.id] = response.data;
+          $scope.results[siteId] = response.data;
         }, function errorCallback(response) {
           $window.alert(response);
         });
     });
   };
   
-  $scope.each($location.search(), function(value, key) {
-    $scope[key] = value;
-  });
+  // Set variables from URL parameters
+  $scope.query = $location.search()["query"];
+  var rawSiteIds = $location.search()["site"]
+  if (rawSiteIds && $scope.isArray(rawSiteIds)) {
+    $scope.initialSiteIds = rawSiteIds;
+  } else if (rawSiteIds) {
+    $scope.initialSiteIds = [rawSiteIds];
+  } else {
+    $scope.initialSiteIds = [];
+  }
   
   siteFactory.getAll()
     .then(function successCallback(response) {
       $scope.availableSites = $scope.map(response.data, function(site) {
-        return $scope.extend({"selected": true}, site);
+        var selected = !$scope.initialSiteIds || $scope.contains($scope.initialSiteIds, site.id);
+        return $scope.extend({"selected": selected}, site);
       });
   
       // Run initial search if we have query parameters in the URL
       if ($scope.query) {
-        search($scope.availableSites); 
+        search($scope.initialSiteIds); 
       };
     }, function errorCallback(response) {
       $window.alert(response);
     });
   
   $scope.search = function() {
-    search($scope.selectedSites);
+    var siteIds = $scope.pluck($scope.selectedSites, "id");
+    search(siteIds);
   };
 }]);
