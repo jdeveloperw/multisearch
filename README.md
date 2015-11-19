@@ -1,9 +1,6 @@
 # multi-search
 Search aggregator for multiple sites
 
-## Viewing the application
-You can view the application at [https://multisearch-client-jdeveloperw.c9.io](https://multisearch-client-jdeveloperw.c9.io)
-
 ## Architecture
 The multisearch application is divided into two separate services:
 
